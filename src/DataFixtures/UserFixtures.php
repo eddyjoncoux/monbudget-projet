@@ -14,6 +14,7 @@ class UserFixtures extends Fixture
         $user->setUsername('eddydevwebb');
         $user->setPassword(1234);
         $user->setRoles(['ROLES_USER']);
+        $user->setName('Eddy');
         $manager->persist($user);
 
         $manager->flush();
