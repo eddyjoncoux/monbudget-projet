@@ -6,5 +6,13 @@
 {% block body %}
 <div class="example-wrapper">
     <h1>Mon Budget V1.0</h1>
+    {% if not app.user %}
+    {{ render(controller('App\\Controller\\SecurityController::login')) }}
+{% else %}
+    <p>Connecté en tant que :  {{ app.user.userIdentifier }}</p>
+    <a href="{{ path('app_logout') }}" class="btn btn-danger">
+        Se déconnecter
+    </a>
+{% endif %}
 </div>
 {% endblock %}
