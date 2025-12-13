@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
 
-
-{% block title %}Mon Budget{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block body %}
 <div class="example-wrapper">
-    <h1>Mon Budget V1.0</h1>
-
+    <h1>MonBudget V1.0 - Dashboard</h1>
+</div>
 {% if not app.user %}
     {{ render(controller('App\\Controller\\SecurityController::login')) }}
 {% else %}
@@ -15,5 +14,4 @@
         Se déconnecter
     </a>
 {% endif %}
-</div>
 {% endblock %}
