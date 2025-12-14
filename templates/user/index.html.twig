@@ -3,15 +3,5 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block body %}
-<div class="example-wrapper">
-    <h1>MonBudget V1.0 - Dashboard</h1>
-</div>
-{% if not app.user %}
-    {{ render(controller('App\\Controller\\SecurityController::login')) }}
-{% else %}
-    <p>Connecté en tant que :  {{ app.user.name }}</p>
-    <a href="{{ path('app_logout') }}" class="btn btn-danger">
-        Se déconnecter
-    </a>
-{% endif %}
+{% include 'header.html.twig' %}
 {% endblock %}
