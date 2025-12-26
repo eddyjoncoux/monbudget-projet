@@ -22,10 +22,12 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
-                default_target_path: /user/dashboard
+                default_target_path: app_user_dashboard
                 enable_csrf: true
             logout:
                 path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
                 # where to redirect after logout
                 # target: app_any_route
 
@@ -37,8 +39,13 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/login, roles: ROLE_USER }
+         # pages publiques
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/logout, roles: PUBLIC_ACCESS }
+
+        # pages protégées
+        - { path: ^/user, roles: ROLE_USER }
+        - { path: ^/transaction, roles: ROLE_USER }
 
 when@test:
     security:
