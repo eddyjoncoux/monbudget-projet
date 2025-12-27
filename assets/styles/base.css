@@ -19,6 +19,8 @@
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
 
+  --bg-input: #b8b6b6;
+
   --success: #16a34a;
   --danger: #dc2626;
 
@@ -111,12 +113,13 @@ body {
 .form-group {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.35rem;
 }
 
 input,
 select {
-  background: #f3f4f6;
+  background: var(--bg-input);
   padding: 0.55rem 0.7rem;
   border-radius: var(--radius-sm);
   font-size: 0.85rem;
@@ -124,9 +127,23 @@ select {
 
 input:focus,
 select:focus {
-  background: #ffffff;
+  background: var(--bg-input);
   outline: 2px solid var(--primary);
 }
+
+input[type="radio"] {
+  display: flex;
+  width: 250px;
+}
+
+textarea {
+  width: 250px;
+  height: 150px;
+  border-radius: 10px;
+  background: var(--bg-input);
+  color: #050505;
+}
+
 
 /* ========= Transactions ========= */
 .transaction {
