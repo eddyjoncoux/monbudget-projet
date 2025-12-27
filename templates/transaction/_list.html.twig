@@ -1,0 +1,33 @@
+{# template/transaction/_list.html.twig #}
+
+{% if transactions is empty %} 
+ 
+<p>Aucune transaction enregistrée.</p>
+
+{% else %} 
+
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th class="th-one">Date</th>
+                <th class="th-two">Montant</th>
+                <th class="th-three">Type</th>
+                <th class="th-four">Catégorie</th>
+                <th class="th-five">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td class="td-one">{{ transaction.date|date('d/m/Y') }}</td>
+                <td class="td-two">{{ transaction.amount }} €</td>
+                <td class="td-three">{{ transaction.type.label }}</td>
+                <td class="td-four">{{ transaction.category.name }}</td>
+                <td class="td-five">{{ transaction.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
