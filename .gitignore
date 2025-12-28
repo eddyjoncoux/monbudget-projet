@@ -26,3 +26,6 @@ yarn-error.log
 /cahier-des-charges/
 /src/DataFixtures/
 ###< symfony/asset-mapper ###
+
+.env.local
+.env.*.local
