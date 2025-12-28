@@ -25,7 +25,7 @@ class Transaction
     private ?string $description = null;
 
     #[ORM\Column(enumType: TransactionType::class)]
-    private TransactionType $type;
+    private ?TransactionType $type;
 
     #[ORM\ManyToOne]
     private ?Category $category = null;

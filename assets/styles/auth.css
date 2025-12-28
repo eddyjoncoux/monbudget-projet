@@ -2,7 +2,7 @@ h1 {
     font-family: 'montserrat';
     font-size: 1.5rem;
     font-weight: 700;
-    color: orange;
+    color: var(--title-h1);
 }
 
 h2 {

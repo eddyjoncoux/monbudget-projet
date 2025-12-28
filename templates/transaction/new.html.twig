@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Transaction{% endblock %}
+{% block title %}Nouvelle Transaction{% endblock %}
 
 {% block body %}
 <div class="page-container">
-    <h1>Ajouter une nouvelle ransaction</h1>
+    <h1>Ajouter une nouvelle transaction</h1>
 
     {{ include('transaction/_form.html.twig') }}
 
-    <a href="{{ path('app_transaction_index') }}">back to list</a>
+    <a href="{{ path('app_transaction_index') }}" class="btn btn-success">Retour</a>
 </div>
 {% endblock %}

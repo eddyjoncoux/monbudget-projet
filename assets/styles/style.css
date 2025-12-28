@@ -57,3 +57,10 @@ tr, th, td {
     text-align: center;
 }
 
+.page-delete {
+    margin: 20px;
+}
+
+.text-transaction {
+    color: var(--transaction);
+}

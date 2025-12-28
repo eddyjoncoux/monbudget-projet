@@ -3,30 +3,31 @@
 {% block title %}Transaction index{% endblock %}
 
 {% block body %}
-    <h1>Transaction index</h1>
-
+<div class="page-container">
+    <h1>Page des transactions</h1>
+    <br>
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Amount</th>
+                {# <th>Id</th> #}
                 <th>Date</th>
+                <th>Montant</th>
                 <th>Description</th>
                 <th>Type</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for transaction in transactions %}
             <tr>
-                <td>{{ transaction.id }}</td>
-                <td>{{ transaction.amount }}</td>
-                <td>{{ transaction.date ? transaction.date|date('Y-m-d H:i:s') : '' }}</td>
+                {# <td>{{ transaction.id }}</td> #}
+                <td>{{ transaction.date ? transaction.date|date('Y-m-d') : '' }}</td>
+                <td>{{ transaction.amount }} €</td>
                 <td>{{ transaction.description }}</td>
                 <td>{{ transaction.type.label }}</td>
                 <td>
-                    <a href="{{ path('app_transaction_show', {'id': transaction.id}) }}">show</a>
-                    <a href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">edit</a>
+                    <a href="{{ path('app_transaction_show', {'id': transaction.id}) }}">Voir</a>
+                    <a href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">Editer</a>
                 </td>
             </tr>
         {% else %}
@@ -37,6 +38,8 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_transaction_new') }}">Create new</a>
-    <a href="{{ path('app_user_dashboard')}}">Revenir au Dashboard</a>
+    <a href="{{ path('app_transaction_new') }}" class="btn btn-primary">➕ Ajouter une nouvelle transaction</a>
+    <br>
+    <a href="{{ path('app_user_dashboard')}}" class="btn btn-success">Revenir au Dashboard</a>
+</div>
 {% endblock %}
