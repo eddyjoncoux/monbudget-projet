@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transaction index{% endblock %}
+
+{% block body %}
+<div class="page-container">
+    <h1>Page des transactions</h1>
+    <br>
+    <table class="table">
+        <thead>
+            <tr>
+                {# <th>Id</th> #}
+                <th>Date</th>
+                <th>Montant</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for transaction in transactions %}
+            <tr>
+                {# <td>{{ transaction.id }}</td> #}
+                <td>{{ transaction.date ? transaction.date|date('Y-m-d') : '' }}</td>
+                <td>{{ transaction.amount }} €</td>
+                <td>{{ transaction.description }}</td>
+                <td>{{ transaction.type.label }}</td>
+                <td>
+                    <a href="{{ path('app_transaction_show', {'id': transaction.id}) }}">Voir</a>
+                    <a href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">Editer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_transaction_new') }}" class="btn btn-primary">➕ Ajouter une nouvelle transaction</a>
+    <br>
+    <a href="{{ path('app_user_dashboard')}}" class="btn btn-success">Revenir au Dashboard</a>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="nav">
+        <nav>
+        <div class="title">
+            <h1>Mon Budget💰
+            <br>v 1.0
+        </h1>
+{% if  app.user %}
+        <p>Connecté en tant que :  {{ app.user.name }}</p>
+        <a href="{{ path('app_logout') }}" class="btn btn-danger">
+            Se déconnecter
+        </a>
+        </nav>
+    </div>
+{% endif %}
+    
+</div>
+{% endblock %}

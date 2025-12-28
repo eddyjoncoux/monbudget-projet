@@ -1,0 +1,42 @@
+h1 {
+    font-family: 'montserrat';
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--title-h1);
+}
+
+h2 {
+    font-family: 'montserrat';
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input {
+    width: 250px;
+    padding-bottom: 10px;
+    color: black;
+}
+
+label {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+button {
+    margin-top: 20px;
+}
+
+.logout {
+    display: inline;
+}
+
+.btn {
+    margin-top: 20px;
+}

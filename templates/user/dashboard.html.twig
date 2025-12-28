@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+{% include 'header.html.twig' %}
+
+<div class="transaction-dahsboard">
+    <h1>
+        <a href="{{ path('app_transaction_new') }}" class="btn btn-primary">➕ Ajouter transaction</a>
+    </h1>
+    <h1>
+        <a href="{{ path('app_transaction_index') }}" class="btn btn-success">Voir les transactions</a>
+    </h1>
+
+<hr>
+    <div class="mes-transactions">
+        <h2>Mes transactions</h2>
+        <strong class="text-transaction">{% include 'transaction/_list.html.twig' with
+            { transactions: transactions     
+        } %}</strong>
+    </div>
+</div>
+{% endblock %}

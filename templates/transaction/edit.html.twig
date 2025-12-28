@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer une transaction{% endblock %}
+
+{% block body %}
+<div class="page-container">
+    <h1>Editer une transaction</h1>
+
+    {{ include('transaction/_form.html.twig', {'button_label': 'Update'}) }}
+
+    {{ include('transaction/_delete_form.html.twig')}}
+
+    <a href="{{ path('app_transaction_index') }}" class="btn btn-success">Revenir à la liste</a>
+    <br>
+</div>
+{% endblock %}

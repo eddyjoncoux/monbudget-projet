@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block title %}Mon Budget{% endblock %}
+
+{% block body %}  
+<div class="container">
+
+    {% if not app.user %}
+        {{ render(controller('App\\Controller\\SecurityController::login')) }}
+    {% endif %}
+    
+    </div>
+
+{% endblock %}
