@@ -7,6 +7,13 @@
 {% else %} 
 
 <div>
+    <div>
+        {% set total = 0 %}
+        {% for transaction in transactions %}
+            {% set total = total + transaction.amount %}
+        {% endfor %}
+        <p>{{ total }} €</p>
+    </div>
     <table>
         <thead>
             <tr>
