@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 // #[IsGranted('ROLE_USER')]
 final class TransactionController extends AbstractController
 {
-    #[Route(name: 'app_transaction_index', methods: ['GET'])]
+    #[Route('/transaction', name: 'app_transaction_index', methods: ['GET'])]
     public function index(TransactionRepository $transactionRepository): Response
     {
         $transactions = $transactionRepository->findBy(
@@ -26,7 +26,7 @@ final class TransactionController extends AbstractController
         );
 
         return $this->render('transaction/index.html.twig', [
-            'transactions' => $transactionRepository->findAll(),
+            'transactions' => $transactionRepository->findBy(['user' => $this->getUser()]),
         ]);
     }
 
@@ -55,19 +55,21 @@ final class TransactionController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
+    #[Route('transaction/{id}', name: 'app_transaction_show', methods: ['GET'])]
     public function show(Transaction $transaction): Response
     {
+        
         if ($transaction->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException();
         }   
+        
 
         return $this->render('transaction/show.html.twig', [
             'transaction' => $transaction,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
+    #[Route('transaction/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
         if($transaction->getUser() !== $this->getUser()) {
@@ -89,7 +91,7 @@ final class TransactionController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_transaction_delete', methods: ['POST'])]
+    #[Route('transaction/{id}', name: 'app_transaction_delete', methods: ['POST'])]
     public function delete(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
         if($transaction->getUser() !== $this->getUser()) {

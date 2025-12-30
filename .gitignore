@@ -29,3 +29,9 @@ yarn-error.log
 
 .env.local
 .env.*.local
+
+.env
+.env.*
+!/env.example
+/public/test-*.php
+/dump.sql

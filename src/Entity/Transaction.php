@@ -30,9 +30,9 @@ class Transaction
     #[ORM\ManyToOne]
     private ?Category $category = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    #[ORM\ManyToOne(inversedBy: 'transactions')]
+
+    private User $user;
 
     public function getId(): ?int
     {
