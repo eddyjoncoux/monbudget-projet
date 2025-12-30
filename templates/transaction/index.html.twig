@@ -26,8 +26,8 @@
                 <td>{{ transaction.description }}</td>
                 <td>{{ transaction.type.label }}</td>
                 <td>
-                    <a href="{{ path('app_transaction_show', {'id': transaction.id}) }}">Voir</a>
-                    <a href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">Editer</a>
+                    <a href="{{ path('app_transaction_show', {'id': transaction.id}) }}">👁️</a>
+                    <a href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">✏️</a>
                 </td>
             </tr>
         {% else %}

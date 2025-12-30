@@ -34,12 +34,15 @@ final class TransactionController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $transaction = new Transaction();
-        $transaction->setUser($this->getUser()); // Transaction appartenant à un user connecté
 
         $form = $this->createForm(TransactionFormType::class, $transaction);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $transaction->setUser($this->getUser()); // Transaction appartenant à un user connecté
+
+            $transaction->applySign();
+
             $entityManager->persist($transaction);
             $entityManager->flush();
 

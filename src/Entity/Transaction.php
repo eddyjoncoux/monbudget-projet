@@ -46,9 +46,17 @@ class Transaction
 
     public function setAmount(float $amount): static
     {
-        $this->amount = $amount;
+        $this->amount = abs($amount);
 
         return $this;
+    }
+
+    public function applySign() : void
+    {
+        if($this->type === TransactionType::EXPENSE) {
+            $this->amount = -abs($this->amount);
+            } else { $this->amount + abs($this->amount);   
+        }
     }
 
     public function getDate(): ?\DateTimeImmutable
