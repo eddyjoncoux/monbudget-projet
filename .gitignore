@@ -27,10 +27,9 @@ yarn-error.log
 /src/DataFixtures/
 ###< symfony/asset-mapper ###
 
+.env
 .env.local
 .env.*.local
-
-.env
 .env.*
 !/env.example
 /public/test-*.php
