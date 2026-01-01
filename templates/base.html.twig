@@ -5,8 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Mon Budget{% endblock %}</title>
         <meta name="description" content="MonBudget, application pour suivre vos finances!">
-    {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+    {% block javascripts %}
+        {% block importmap %}
+            {{ importmap('app') }}
+        {% endblock %}
     {% endblock %}  
     </head>
     <body>
