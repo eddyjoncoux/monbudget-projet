@@ -6,11 +6,15 @@
 
 {% block body %}  
 <div class="container">
-
     {% if not app.user %}
         {{ render(controller('App\\Controller\\SecurityController::login')) }}
     {% endif %}
-    
+
+</div>
+<div class="container">
+    <div class="main-slogan">
+        <h2>Application mon budget, gestion de budget financier personnel.</h2>   
     </div>
+</div>
 
 {% endblock %}

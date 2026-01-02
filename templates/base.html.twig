@@ -1,19 +1,41 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Mon Budget{% endblock %}</title>
-        <meta name="description" content="MonBudget, application pour suivre vos finances!">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Mon Budget{% endblock %}</title>
+    <meta name="description" content="MonBudget, application pour suivre vos finances!">
+
+    {# CSS #}
+    <link rel="stylesheet" href="{{ asset('style/reset.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/style.css') }}">
+
+    {% block stylesheets %}{% endblock %}
+</head>
+
+<body>
+
+    {# FLASH MESSAGES (global) #}
+    <div class="flash-container">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash flash-{{ label }}" onclick="this.remove()">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    {# CONTENU DES PAGES #}
+    {% block body %}{% endblock %}
+
+    {# JS #}
     {% block javascripts %}
-        {% block importmap %}
-            {{ importmap('app') }}
-        {% endblock %}
-    {% endblock %}  
-    </head>
-    <body>
-        {% block body %}
-        
-        {% endblock %}
-    </body>
+        {{ importmap('app') }}
+    {% endblock %}
+
+</body>
 </html>
+

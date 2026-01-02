@@ -64,3 +64,78 @@ tr, th, td {
 .text-transaction {
     color: var(--transaction);
 }
+
+.main-slogan {
+    display: flex;
+    justify-content: center;
+}
+
+/* ===== Flash message ===== */
+
+.flash-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+}
+
+.flash {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.flash-success {
+  background: #3BCF8E;
+  color: #064E3B;
+}
+
+.flash-error {
+  background: #F87171;
+  color: #7F1D1D;
+}
+
+/* ===== Flash animation ===== */
+
+.flash {
+  opacity: 0;
+  transform: translateY(-10px);
+
+  animation-name: flash-in, flash-out;
+  animation-duration: 0s, 4s;
+  animation-timing-function: ease, ease;
+  animation-fill-mode: forwards, forwards;
+
+  /* ⏱ délai AVANT la disparition */
+    animation-delay: 0s, 4s;
+}
+
+.flash {
+  cursor: pointer;
+}
+
+.flash:hover {
+  opacity: 0.9;
+}
+
+@keyframes flash-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes flash-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes flash-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}

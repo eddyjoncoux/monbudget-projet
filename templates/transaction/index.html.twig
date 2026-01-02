@@ -28,6 +28,7 @@
                 <td>
                     <a href="{{ path('app_transaction_show', {'id': transaction.id}) }}">👁️</a>
                     <a href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">✏️</a>
+                    <a href="{{ path('app_transaction_delete', {'id': transaction.id}) }}">🗑️</a>
                 </td>
             </tr>
         {% else %}
