@@ -46,6 +46,8 @@ final class TransactionController extends AbstractController
             $entityManager->persist($transaction);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Transaction ajoutée avec succès');
+
             return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -55,7 +57,7 @@ final class TransactionController extends AbstractController
         ]);
     }
 
-    #[Route('transaction/{id}', name: 'app_transaction_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
     public function show(Transaction $transaction): Response
     {
         
@@ -69,7 +71,7 @@ final class TransactionController extends AbstractController
         ]);
     }
 
-    #[Route('transaction/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
         if($transaction->getUser() !== $this->getUser()) {
@@ -82,7 +84,13 @@ final class TransactionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+        $this->addFlash(
+            'success', 
+            'Transaction éditée avec succès!'
+        );
+
             return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
+            
         }
 
         return $this->render('transaction/edit.html.twig', [
@@ -91,7 +99,7 @@ final class TransactionController extends AbstractController
         ]);
     }
 
-    #[Route('transaction/{id}', name: 'app_transaction_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_transaction_delete', methods: ['POST'])]
     public function delete(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
         if($transaction->getUser() !== $this->getUser()) {
@@ -101,6 +109,12 @@ final class TransactionController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$transaction->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($transaction);
             $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Transaction supprimée avec succès!'
+            );
+
         }
 
         return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
