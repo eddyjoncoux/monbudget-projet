@@ -43,6 +43,11 @@ tr, th, td {
     padding-right: 10px;
 }
 
+.btn-navigation {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 /* formulaire transaction */
 
 .form-container {
