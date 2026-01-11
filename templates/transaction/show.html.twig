@@ -33,8 +33,8 @@
 
     <a href="{{ path('app_transaction_edit', {'id': transaction.id}) }}" class="btn btn-primary">Editer</a>
 
-    <a href="{{ path('app_transaction_index') }}" class="btn btn-success">Retour aux transactions</a>
-
     {{ include('transaction/_delete_form.html.twig') }}
+
+    <a href="{{ path('app_transaction_index') }}" class="btn btn-success">Retour aux transactions</a>
 </div>
 {% endblock %}

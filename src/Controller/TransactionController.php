@@ -17,16 +17,15 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 // #[IsGranted('ROLE_USER')]
 final class TransactionController extends AbstractController
 {
-    #[Route('/transaction', name: 'app_transaction_index', methods: ['GET'])]
+    #[Route('/', name: 'app_transaction_index', methods: ['GET'])]
     public function index(TransactionRepository $transactionRepository): Response
     {
-        $transactions = $transactionRepository->findBy(
-            ['user' => $this->getUser()],
-            ['date' => 'DESC']
-        );
 
         return $this->render('transaction/index.html.twig', [
-            'transactions' => $transactionRepository->findBy(['user' => $this->getUser()]),
+            'transactions' => $transactionRepository->findBy(
+                ['user' => $this->getUser()],
+                ['date' => 'DESC']
+            ),
         ]);
     }
 
@@ -82,6 +81,8 @@ final class TransactionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $transaction->applySign();
+            
             $entityManager->flush();
 
         $this->addFlash(
