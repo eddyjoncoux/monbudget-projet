@@ -8,46 +8,52 @@
     <div class="btn-navigation">
         <a href="{{ path('app_transaction_new') }}" class="btn btn-primary">➕ Ajouter une nouvelle transaction</a>
         <br>
-        <a href="{{ path('app_user_dashboard')}}" class="btn btn-success">Revenir au Dashboard</a>
+        <a href="{{ path('app_user_dashboard')}}" class="btn btn-success">↩️Revenir au Dashboard</a>
     </div>
-    <div>
-        {% set total = 0 %}
-        {% for transaction in transactions %}
-            {% set total = total + transaction.amount %}
-        {% endfor %}
-        <p>{{ total }} €</p>
+<div class="mes-transactions">
+    {% if transactionsByDate is not empty %}
+    <div class="transactions-container">
+        <table class="transactions-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Montant</th>
+                    <th>Catégorie</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dateGroup in transactionsByDate %}
+                    <tr class="date-separator">
+                        <td colspan="4" class="date-header">
+                            📅 {{ dateGroup.date|date('d/m/Y') }}
+                        </td>
+                    </tr>
+                    {% for transaction in dateGroup.transactions %}
+                        <tr class="transaction-item {{ transaction.type.value|lower }}">
+                            <td class="transaction-description">{{ transaction.description }}</td>
+                            <td class="transaction-amount">
+                                {% if transaction.type.label == 'Dépense' %}
+                                    {{ transaction.amount }}€
+                                {% else %}
+                                    +{{ transaction.amount }}€
+                                {% endif %}
+                            </td>
+                            <td>{{ transaction.category.name }}</td>
+                            <td class="transaction-actions">
+                                <a href="{{ path('app_transaction_show', {'id': transaction.id}) }}" class="btn-icon" title="Voir">👁️</a>
+                                <a href="{{ path('app_transaction_edit', {'id': transaction.id}) }}" class="btn-icon" title="Modifier">✏️</a>
+                                <a href="{{ path('app_transaction_delete', {'id': transaction.id}) }}" class="btn-icon btn-delete" title="Supprimer" onclick="return confirm('Confirmer la suppression ?')">🗑️</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    <table class="table">
-        <thead>
-            <tr>
-                {# <th>Id</th> #}
-                <th>Date</th>
-                <th>Montant</th>
-                <th>Description</th>
-                <th>Type</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for transaction in transactions %}
-            <tr>
-                {# <td>{{ transaction.id }}</td> #}
-                <td>{{ transaction.date|date('d/m/Y') }}</td>
-                <td>{{ transaction.amount }} €</td>
-                <td>{{ transaction.description }}</td>
-                <td>{{ transaction.type.label }}</td>
-                <td>
-                    <a href="{{ path('app_transaction_show', {'id': transaction.id}) }}">👁️</a>
-                    <a href="{{ path('app_transaction_edit', {'id': transaction.id}) }}">✏️</a>
-                    <a href="{{ path('app_transaction_delete', {'id': transaction.id}) }}">🗑️</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">Aucune transaction trouvée</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% else %}
+        <p class="no-transactions">Aucune transaction pour le moment.</p>
+    {% endif %}
+    </div>
 </div>
 {% endblock %}
