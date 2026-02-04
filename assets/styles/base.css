@@ -26,6 +26,7 @@
   --success: #16a34a;
   --success-hover: #20f86f;
   --danger: #dc2626;
+  --danger-hover: #d24848;
 
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -114,6 +115,10 @@ body {
 .btn-danger {
   background: var(--danger);
   color: #ffffff;
+}
+
+.btn-danger:hover {
+  background: var(--danger-hover);
 }
 
 .btn-muted {

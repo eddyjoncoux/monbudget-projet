@@ -17,17 +17,39 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 // #[IsGranted('ROLE_USER')]
 final class TransactionController extends AbstractController
 {
+    private TransactionRepository $transactionRepository;
+
+    public function __construct(TransactionRepository $transactionRepository)
+    {
+        $this->transactionRepository = $transactionRepository;
+    }
+    
     #[Route('/', name: 'app_transaction_index', methods: ['GET'])]
     public function index(TransactionRepository $transactionRepository): Response
     {
+        $transactions = $this->transactionRepository->findBy(
+            ['user' => $this->getUser()],
+            ['date' => 'DESC'] // Tri par date décroissante
+        );
+
+        // Regrouper les transactions par date
+        $transactionsByDate = [];
+        foreach ($transactions as $transaction) {
+            $dateKey = $transaction->getDate()->format('Y-m-d');
+            if (!isset($transactionsByDate[$dateKey])) {
+                $transactionsByDate[$dateKey] = [
+                    'date' => $transaction->getDate(),
+                    'transactions' => []
+                ];
+            }
+            $transactionsByDate[$dateKey]['transactions'][] = $transaction;
+        }
 
         return $this->render('transaction/index.html.twig', [
-            'transactions' => $transactionRepository->findBy(
-                ['user' => $this->getUser()],
-                ['date' => 'DESC']
-            ),
+            'transactionsByDate' => $transactionsByDate,
         ]);
     }
+
 
     #[Route('/new', name: 'app_transaction_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

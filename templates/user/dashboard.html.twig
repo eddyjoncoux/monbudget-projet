@@ -16,9 +16,9 @@
 <hr>
     <div class="mes-transactions">
         <h2>Mes transactions</h2>
-        <strong class="text-transaction">{% include 'transaction/_list.html.twig' with
-            { transactions: transactions     
-        } %}</strong>
+        <strong>{% include 'transaction/_list.html.twig' with
+            { transactions: transactions, transactionsByDate: transactionsByDate } %} 
+    </strong>
     </div>
 </div>
 {% endblock %}
