@@ -1,0 +1,94 @@
+/* ===== Transactions ===== */
+
+.transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1f2646;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.transactions-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #e9ecef;
+}
+
+.transactions-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.transactions-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* Ligne de séparation de date */
+.date-separator td {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #f8fafd;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border: none;
+}
+
+.transaction-item:hover {
+    background-color: #989a9d;
+}
+
+/* Couleurs des montants */
+.transaction-item.dépense .transaction-amount {
+    color: #dc3545;
+    font-weight: 700;
+}
+
+.transaction-item.revenu .transaction-amount {
+    color: #28a745;
+    font-weight: 700;
+}
+
+.transaction-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.25rem;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.btn-icon:hover {
+    transform: scale(1.2);
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+    .transactions-table {
+        font-size: 0.85rem;
+    }
+    
+    .transactions-table th,
+    .transactions-table td {
+        padding: 0.5rem 0.3rem;
+    }
+    
+    .date-separator td {
+        padding: 0.6rem 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .btn-icon {
+        font-size: 1rem;
+    }
+    
+    .transaction-actions {
+        gap: 0.3rem;
+    }
+}
