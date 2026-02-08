@@ -28,9 +28,9 @@ yarn-error.log
 ###< symfony/asset-mapper ###
 
 .env
+.env.dev
 .env.local
-.env.*.local
-.env.*
+.env.local.backup
 !/env.example
 /public/test-*.php
 /dump.sql
