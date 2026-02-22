@@ -43,7 +43,7 @@
                             <td class="transaction-actions">
                                 <a href="{{ path('app_transaction_show', {'id': transaction.id}) }}" class="btn-icon" title="Voir">👁️</a>
                                 <a href="{{ path('app_transaction_edit', {'id': transaction.id}) }}" class="btn-icon" title="Modifier">✏️</a>
-                                <a href="{{ path('app_transaction_delete', {'id': transaction.id}) }}" class="btn-icon btn-delete" title="Supprimer" onclick="return confirm('Confirmer la suppression ?')">🗑️</a>
+                                <a href="{{ path('app_transaction_delete', {'id': transaction.id}) }}" class="btn-icon btn-delete" title="Supprimer">🗑️</a>
                             </td>
                         </tr>
                     {% endfor %}

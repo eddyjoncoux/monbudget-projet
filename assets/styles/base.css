@@ -198,6 +198,13 @@ textarea {
   color: var(--danger);
 }
 
+.footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
 /* ========= Responsive ========= */
 
 /* Tablet */
