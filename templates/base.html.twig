@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="{{ asset('style/base.css') }}">
     <link rel="stylesheet" href="{{ asset('style/style.css') }}">
     <link rel="stylesheet" href="{{ asset('style/transactions.css') }}">
-    
 
     {% block stylesheets %}{% endblock %}
 </head>
@@ -31,13 +30,13 @@
     </div>
 
     {# CONTENU DES PAGES #}
-    {% block body %}{% endblock %}
+    {% block body %}
+    {% endblock %}
 
     {# JS #}
     {% block javascripts %}
         {{ importmap('app') }}
     {% endblock %}
-
 </body>
 </html>
 

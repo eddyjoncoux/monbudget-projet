@@ -26,7 +26,15 @@ hr {
 .mes-transactions {
     background-color: rgb(44, 44, 44);
     padding: 10px;
-    border-radius: 10px
+    border-radius: 10px;
+    text-align: center;
+}
+
+.mes-transactions-btn {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .mes-transactions, h2 {
