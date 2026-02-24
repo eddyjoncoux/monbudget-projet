@@ -2,12 +2,18 @@
 <div>
     <div>
         {% set total = 0 %}
-        {% for transaction in transactions %}
-            {% set total = total + transaction.amount %}
+        {% for dateGroup in itemsByDate %}
+            {% for item in dateGroup.items %}
+                {% if item.type == 'transaction' %}
+                    {% set total = total + item.data.amount %}
+                {% elseif item.type == 'withdrawal' %}
+                    {% set total = total - item.data.amount %}
+                {% endif %}
+            {% endfor %}
         {% endfor %}
         <p>{{ total }} €</p>
     </div>
-    {% if transactionsByDate is not empty %}
+    {% if itemsByDate is not empty %}
     <div class="transactions-container">
         <table class="transactions-table">
             <thead>
@@ -18,26 +24,42 @@
                 </tr>
             </thead>
             <tbody>
-                {% for dateGroup in transactionsByDate %}
+                {% for dateGroup in itemsByDate %}
                     <tr class="date-separator">
                         <td colspan="4" class="date-header">
                             📅 {{ dateGroup.date|date('d/m/Y') }}
                         </td>
                     </tr>
-                    {% for transaction in dateGroup.transactions %}
-                        <tr class="transaction-item {{ transaction.type.value|lower }}">
-                            <td class="transaction-description">{{ transaction.description }}</td>  
-                            <td class="transaction-amount">
-                                {% if transaction.type.label == 'Dépense' %}
-                                    {{ transaction.amount }}€
-                                {% else %}
-                                    +{{ transaction.amount }}€
-                                {% endif %}
-                            </td>
-                            <td>
-                                {{ transaction.category.name }}
-                            </td>
-                        </tr>
+                    {% for item in dateGroup.items %}
+                        {% if item.type == 'transaction' %}
+                            <tr class="transaction-item {{ item.data.type.value|lower }}">
+                                <td class="transaction-description">{{ item.data.description }}</td>  
+                                <td class="transaction-amount">
+                                    {% if item.data.type.label == 'Dépense' %}
+                                        {{ item.data.amount }}€
+                                    {% else %}
+                                        +{{ item.data.amount }}€
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{ item.data.category.name }}
+                                </td>
+                            </tr>
+                        {% elseif item.type == 'withdrawal' %}
+                            <tr class="transaction-item withdrawal">
+                                <td class="transaction-description">{{ item.data.description }} (Prélèvement)</td>  
+                                <td class="transaction-amount">
+                                    -{{ item.data.amount }}€
+                                </td>
+                                <td>
+                                    {% if item.data.category %}
+                                        {{ item.data.category.name }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                 {% endfor %}
             </tbody>

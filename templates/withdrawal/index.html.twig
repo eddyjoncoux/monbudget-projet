@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes prélèvements{% endblock %}
+
+{% block body %}
+<div class="page-container">
+    <h1>Mes Prélèvements</h1>
+    <div class="btn-navigation">
+        <a href="{{ path('app_withdrawal_new') }}" class="btn btn-primary">➕ Ajouter un prélèvement</a>
+        <br>
+        <a href="{{ path('app_user_dashboard') }}" class="btn btn-secondary">↩️ Revenir au Dashboard</a>
+    </div>
+
+    {% if app.flashes %}
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    {% if withdrawals is not empty %}
+        <div class="withdrawals-container">
+            <div class="withdrawals-summary">
+                <p class="summary-text">
+                    <strong>{{ withdrawals|length }}</strong> 
+                    prélèvement{{ withdrawals|length > 1 ? 's' : '' }} enregistré{{ withdrawals|length > 1 ? 's' : '' }}
+                </p>
+            </div>
+
+            <div class="withdrawals-wrapper">
+                <table class="withdrawals-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Montant</th>
+                        <th>Fréquence</th>
+                        <th>Prochain prélèvement</th>
+                        <th>Catégorie</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for withdrawal in withdrawals %}
+                        <tr class="withdrawal-item {{ withdrawal.isActive ? 'active' : 'inactive' }}">
+                            <td class="withdrawal-description">{{ withdrawal.description }}</td>
+                            <td class="withdrawal-amount">{{ withdrawal.amount|number_format(2, ',', '.') }}€</td>
+                            <td class="withdrawal-frequency">{{ withdrawal.frequency.label }}</td>
+                            <td class="withdrawal-date">
+                                {{ withdrawal.nextWithdrawalDate|date('d/m/Y') }}
+                                {% if withdrawal.isOverdue %}
+                                    <span class="badge-overdue">⚠️ En retard</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if withdrawal.category %}
+                                    {{ withdrawal.category.name }}
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if withdrawal.isActive %}
+                                    <span class="badge-active">✅ Actif</span>
+                                {% else %}
+                                    <span class="badge-inactive">❌ Inactif</span>
+                                {% endif %}
+                            </td>
+                            <td class="withdrawal-actions">
+                                <a href="{{ path('app_withdrawal_show', {'id': withdrawal.id}) }}" class="btn-icon" title="Voir">👁️</a>
+                                <a href="{{ path('app_withdrawal_edit', {'id': withdrawal.id}) }}" class="btn-icon" title="Modifier">✏️</a>
+                                {% if withdrawal.isActive and withdrawal.isOverdue %}
+                                    <form method="post" action="{{ path('app_withdrawal_process', {'id': withdrawal.id}) }}" style="display:inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('process' ~ withdrawal.id) }}">
+                                        <button type="submit" class="btn-icon btn-success" title="Traiter le prélèvement">▶️</button>
+                                    </form>
+                                {% endif %}
+                                {% if withdrawal.isActive %}
+                                    <form method="post" action="{{ path('app_withdrawal_toggle', {'id': withdrawal.id}) }}" style="display:inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ withdrawal.id) }}">
+                                        <button type="submit" class="btn-icon btn-secondary" title="Désactiver" onclick="return confirm('Êtes-vous sûr de vouloir désactiver ce prélèvement?')">⊘</button>
+                                    </form>
+                                {% else %}
+                                    <form method="post" action="{{ path('app_withdrawal_toggle', {'id': withdrawal.id}) }}" style="display:inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ withdrawal.id) }}">
+                                        <button type="submit" class="btn-icon btn-success" title="Activer">✓</button>
+                                    </form>
+                                {% endif %}
+                                <form method="post" action="{{ path('app_withdrawal_delete', {'id': withdrawal.id}) }}" style="display:inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ withdrawal.id) }}">
+                                    <button type="submit" class="btn-icon btn-delete" title="Supprimer" onclick="return confirm('Êtes-vous sûr?')">🗑️</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>Aucun prélèvement enregistré. <a href="{{ path('app_withdrawal_new') }}">Créez-en un!</a></p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

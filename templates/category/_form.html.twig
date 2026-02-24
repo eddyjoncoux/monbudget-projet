@@ -1,4 +1,8 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">{{ button_label|default('Sauvegarder') }}</button>
+    <div class="form-group">
+        {{ form_label(form.name, 'Nom de la catégorie') }}
+        {{ form_widget(form.name) }}
+        {{ form_errors(form.name) }}
+        <button class="btn btn-primary">{{ button_label|default('Sauvegarder') }}</button>
+    </div>
 {{ form_end(form) }}
