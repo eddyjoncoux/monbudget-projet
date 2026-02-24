@@ -29,6 +29,13 @@ final class CategoryController extends AbstractController
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
+        //Vérifier si il n'existe pas déjà une catégorie avec le même nom
+        $existingCategory = $entityManager->getRepository(Category::class)->findOneBy(['name' => $category->getName()]);
+        if ($existingCategory) {
+            $this->addFlash('error', 'Une catégorie avec ce nom existe déjà.');
+            return $this->redirectToRoute('app_category_new');
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($category);
             $entityManager->flush();

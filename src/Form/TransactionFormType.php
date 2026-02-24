@@ -24,7 +24,10 @@ class TransactionFormType extends AbstractType
             ->add('description')
 
             ->add('type', ChoiceType::class, [
-                'choices' => TransactionType::cases(),
+                'choices' => [
+                    TransactionType::EXPENSE,
+                    TransactionType::INCOME,
+                ],
                 'choice_label' => fn (TransactionType $choice) => $choice->label(),
                 'choice_value' => fn (?TransactionType $choice) => $choice?->value,
                 'expanded' => true,   // boutons radio

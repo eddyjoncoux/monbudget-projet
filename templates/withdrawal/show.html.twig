@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du prélèvement{% endblock %}
+
+{% block body %}
+<div class="page-container">
+    <h1>Détails du prélèvement</h1>
+
+    <div class="withdrawal-details">
+        <div class="detail-header">
+            <h2>{{ withdrawal.description }}</h2>
+            <span class="badge {% if withdrawal.isActive %}badge-active{% else %}badge-inactive{% endif %}">
+                {% if withdrawal.isActive %}✅ Actif{% else %}❌ Inactif{% endif %}
+            </span>
+        </div>
+
+        <div class="detail-content">
+            <div class="detail-section">
+                <h3>Informations principales</h3>
+                <dl class="detail-list">
+                    <dt>Montant</dt>
+                    <dd class="amount">{{ withdrawal.amount|number_format(2, ',', '.') }}€</dd>
+
+                    <dt>Fréquence</dt>
+                    <dd>{{ withdrawal.frequency.label }}</dd>
+
+                    <dt>Catégorie</dt>
+                    <dd>
+                        {% if withdrawal.category %}
+                            {{ withdrawal.category.name }}
+                        {% else %}
+                            <span class="text-muted">Non classée</span>
+                        {% endif %}
+                    </dd>
+                </dl>
+            </div>
+
+            <div class="detail-section">
+                <h3>Calendrier</h3>
+                <dl class="detail-list">
+                    <dt>Date de début</dt>
+                    <dd>{{ withdrawal.startDate|date('d/m/Y') }}</dd>
+
+                    <dt>Prochain prélèvement</dt>
+                    <dd>
+                        {{ withdrawal.nextWithdrawalDate|date('d/m/Y') }}
+                        {% if withdrawal.isOverdue %}
+                            <span class="badge-overdue">⚠️ En retard</span>
+                        {% endif %}
+                    </dd>
+
+                    {% if withdrawal.lastWithdrawalDate %}
+                        <dt>Dernier prélèvement</dt>
+                        <dd>{{ withdrawal.lastWithdrawalDate|date('d/m/Y') }}</dd>
+                    {% endif %}
+
+                    {% if withdrawal.endDate %}
+                        <dt>Date de fin</dt>
+                        <dd>{{ withdrawal.endDate|date('d/m/Y') }}</dd>
+                    {% else %}
+                        <dt>Date de fin</dt>
+                        <dd><span class="text-muted">Sans fin</span></dd>
+                    {% endif %}
+                </dl>
+            </div>
+
+            <div class="detail-section">
+                <h3>Gestion</h3>
+                <div class="management-actions">
+                    {% if withdrawal.isActive and withdrawal.isOverdue %}
+                        <form method="post" action="{{ path('app_withdrawal_process', {'id': withdrawal.id}) }}" style="display:inline;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('process' ~ withdrawal.id) }}">
+                            <button type="submit" class="btn btn-success">▶️ Traiter le prélèvement</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3>Informations de suivi</h3>
+                <dl class="detail-list">
+                    <dt>Créé le</dt>
+                    <dd>{{ withdrawal.createdAt|date('d/m/Y à H:i') }}</dd>
+
+                    {% if withdrawal.updatedAt %}
+                        <dt>Modifié le</dt>
+                        <dd>{{ withdrawal.updatedAt|date('d/m/Y à H:i') }}</dd>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+
+        <div class="detail-actions">
+            <a href="{{ path('app_withdrawal_edit', {'id': withdrawal.id}) }}" class="btn btn-primary">✏️ Modifier</a>
+            {% if withdrawal.isActive %}
+                <form method="post" action="{{ path('app_withdrawal_toggle', {'id': withdrawal.id}) }}" style="display:inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ withdrawal.id) }}">
+                    <button type="submit" class="btn btn-secondary" onclick="return confirm('Êtes-vous sûr?')">⊘ Désactiver</button>
+                </form>
+            {% else %}
+                <form method="post" action="{{ path('app_withdrawal_toggle', {'id': withdrawal.id}) }}" style="display:inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ withdrawal.id) }}">
+                    <button type="submit" class="btn btn-success">✓ Activer</button>
+                </form>
+            {% endif %}
+            <form method="post" action="{{ path('app_withdrawal_delete', {'id': withdrawal.id}) }}" style="display:inline;">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ withdrawal.id) }}">
+                <button type="submit" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce prélèvement?')">🗑️ Supprimer</button>
+            </form>
+            <a href="{{ path('app_withdrawal_index') }}" class="btn btn-secondary">↩️ Retour</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

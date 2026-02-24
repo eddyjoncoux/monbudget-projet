@@ -39,13 +39,18 @@
 }
 
 /* Couleurs des montants */
-.transaction-item.dépense .transaction-amount {
+.transaction-item.expense .transaction-amount {
     color: #dc3545;
     font-weight: 700;
 }
 
-.transaction-item.revenu .transaction-amount {
+.transaction-item.income .transaction-amount {
     color: #28a745;
+    font-weight: 700;
+}
+
+.transaction-item.withdrawal .transaction-amount {
+    color: var(--transaction);
     font-weight: 700;
 }
 

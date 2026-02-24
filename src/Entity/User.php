@@ -39,6 +39,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Transaction::class)]
     private Collection $transactions;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Withdrawal::class)]
+    private Collection $withdrawals;
+
+    public function __construct()
+    {
+        $this->transactions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->withdrawals = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -128,6 +137,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getWithdrawals(): Collection
+    {
+        return $this->withdrawals;
+    }
+
+    public function addWithdrawal(Withdrawal $withdrawal): static
+    {
+        if (!$this->withdrawals->contains($withdrawal)) {
+            $this->withdrawals->add($withdrawal);
+            $withdrawal->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWithdrawal(Withdrawal $withdrawal): static
+    {
+        if ($this->withdrawals->removeElement($withdrawal)) {
+            if ($withdrawal->getUser() === $this) {
+                $withdrawal->setUser(null);
+            }
+        }
 
         return $this;
     }
