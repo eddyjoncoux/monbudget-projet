@@ -6,7 +6,9 @@
 <div class="page-container">
     <h1>Editer une transaction</h1>
 
-    {{ include('transaction/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="form-withdrawal-container">
+        {{ include('transaction/_form.html.twig', {'button_label': 'Update'}) }}
+    </div>
 
     {{ include('transaction/_delete_form.html.twig')}}
 

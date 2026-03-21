@@ -78,6 +78,37 @@ final class CategoryController extends AbstractController
         ]);
     }
 
+    #[Route('/api/create', name: 'app_category_api_create', methods: ['POST'])]
+    public function apiCreate(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $name = trim($data['name'] ?? '');
+
+        if (empty($name)) {
+            return $this->json(['success' => false, 'message' => 'Le nom de la catégorie est requis'], 400);
+        }
+
+        // Vérifier si la catégorie existe déjà
+        $existingCategory = $entityManager->getRepository(Category::class)->findOneBy(['name' => $name]);
+        if ($existingCategory) {
+            return $this->json(['success' => false, 'message' => 'Une catégorie avec ce nom existe déjà'], 400);
+        }
+
+        $category = new Category();
+        $category->setName($name);
+
+        $entityManager->persist($category);
+        $entityManager->flush();
+
+        return $this->json([
+            'success' => true,
+            'category' => [
+                'id' => $category->getId(),
+                'name' => $category->getName()
+            ]
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_category_delete', methods: ['POST'])]
     public function delete(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {

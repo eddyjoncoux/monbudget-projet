@@ -197,7 +197,7 @@
 
 /* Formulaires */
 .form-withdrawal-container {
-    background-color: var(--bg-card);
+    background-color: #f8fafc;
     padding: 2rem;
     border-radius: var(--radius-lg);
     max-width: 600px;
@@ -219,7 +219,7 @@
 .form-group label {
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: #1f2937;
+    color: #374151;
     font-size: 0.95rem;
 }
 
@@ -228,8 +228,8 @@
     border: 2px solid #e5e7eb;
     border-radius: var(--radius-md);
     font-size: 0.95rem;
-    background-color: #fafafa;
-    color: #1f2937;
+    background-color: #ffffff;
+    color: #374151;
     transition: border-color 0.2s ease;
     font-family: inherit;
 }
@@ -245,6 +245,19 @@
     background-color: #f3f4f6;
     color: var(--text-muted);
     cursor: not-allowed;
+}
+
+/* Symboles monétaires visibles */
+.form-group > div:has(input[type="text"]) {
+    color: #374151;
+}
+
+/* Texte et symboles dans les champs monéy */
+.money-widget,
+[data-money-widget],
+.form-group [class*="money"],
+.form-group span {
+    color: #374151 !important;
 }
 
 .form-check {
@@ -275,8 +288,24 @@
 
 .form-help {
     font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: 0.35rem;
+    color: #1f2937;
+    margin-top: 0.5rem;
+    display: block !important;
+    font-weight: 500;
+}
+
+/* Petits textes d'aide Symfony */
+small,
+.small-text,
+.form-text,
+[data-help],
+.help-text {
+    font-size: 0.85rem;
+    color: #1f2937 !important;
+    margin-top: 0.5rem !important;
+    display: block !important;
+    opacity: 1 !important;
+    font-weight: 500;
 }
 
 .form-errors {

@@ -5,9 +5,11 @@
         {% for dateGroup in itemsByDate %}
             {% for item in dateGroup.items %}
                 {% if item.type == 'transaction' %}
-                    {% set total = total + item.data.amount %}
-                {% elseif item.type == 'withdrawal' %}
-                    {% set total = total - item.data.amount %}
+                    {% if item.data.type.label == 'Dépense' %}
+                        {% set total = total - item.data.amount %}
+                    {% else %}
+                        {% set total = total + item.data.amount %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         {% endfor %}
@@ -33,7 +35,7 @@
                     {% for item in dateGroup.items %}
                         {% if item.type == 'transaction' %}
                             <tr class="transaction-item {{ item.data.type.value|lower }}">
-                                <td class="transaction-description">{{ item.data.description }}</td>  
+                                <td class="transaction-description">{{ item.data.description }}</td>
                                 <td class="transaction-amount">
                                     {% if item.data.type.label == 'Dépense' %}
                                         {{ item.data.amount }}€
@@ -43,20 +45,6 @@
                                 </td>
                                 <td>
                                     {{ item.data.category.name }}
-                                </td>
-                            </tr>
-                        {% elseif item.type == 'withdrawal' %}
-                            <tr class="transaction-item withdrawal">
-                                <td class="transaction-description">{{ item.data.description }} (Prélèvement)</td>  
-                                <td class="transaction-amount">
-                                    -{{ item.data.amount }}€
-                                </td>
-                                <td>
-                                    {% if item.data.category %}
-                                        {{ item.data.category.name }}
-                                    {% else %}
-                                        -
-                                    {% endif %}
                                 </td>
                             </tr>
                         {% endif %}

@@ -6,7 +6,9 @@
 <div class="page-container">
     <h1>Ajouter une nouvelle transaction</h1>
 
-    {{ include('transaction/_form.html.twig') }}
+    <div class="form-withdrawal-container">
+        {{ include('transaction/_form.html.twig') }}
+    </div>
 
     <a href="{{ path('app_transaction_index') }}" class="btn btn-success">Retour</a>
 </div>

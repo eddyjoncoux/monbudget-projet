@@ -17,13 +17,22 @@ class TransactionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('amount')
-            ->add('date', DateTimeType::class, [
-                'widget' => 'single_text',
+            ->add('amount', null, [
+                'label' => 'Montant',
+                'help' => 'Montant de la transaction en euros',
             ])
-            ->add('description')
-
+            ->add('date', DateTimeType::class, [
+                'label' => 'Date',
+                'widget' => 'single_text',
+                'help' => 'Date de la transaction',
+            ])
+            ->add('description', null, [
+                'label' => 'Description',
+                'help' => 'Description de la transaction (optionnel)',
+                'required' => false,
+            ])
             ->add('type', ChoiceType::class, [
+                'label' => 'Type',
                 'choices' => [
                     TransactionType::EXPENSE,
                     TransactionType::INCOME,
@@ -32,11 +41,14 @@ class TransactionFormType extends AbstractType
                 'choice_value' => fn (?TransactionType $choice) => $choice?->value,
                 'expanded' => true,   // boutons radio
                 'multiple' => false,
+                'help' => 'Sélectionnez si c\'est une dépense ou un revenu',
             ])
             ->add('category', EntityType::class, [
+                'label' => 'Catégorie',
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'placeholder' => 'Choisir une catégorie',
+                'help' => 'Catégorie de la transaction',
             ]);
     }
 
