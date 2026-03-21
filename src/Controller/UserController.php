@@ -21,10 +21,7 @@ final class UserController extends AbstractController
         ['date' => 'DESC']
     );
 
-    // Get active withdrawals for the user
-    $withdrawals = $withdrawalRepository->findActiveByUser($this->getUser());
-
-    // Regrouper les transactions ET prélèvements par date
+    // Regrouper les transactions par date
     $itemsByDate = [];
     
     // Ajouter les transactions
@@ -42,28 +39,12 @@ final class UserController extends AbstractController
         ];
     }
 
-    // Ajouter les prélèvements (en utilisant la date du prochain prélèvement)
-    foreach ($withdrawals as $withdrawal) {
-        $dateKey = $withdrawal->getNextWithdrawalDate()->format('Y-m-d');
-        if (!isset($itemsByDate[$dateKey])) {
-            $itemsByDate[$dateKey] = [
-                'date' => $withdrawal->getNextWithdrawalDate(),
-                'items' => []
-            ];
-        }
-        $itemsByDate[$dateKey]['items'][] = [
-            'type' => 'withdrawal',
-            'data' => $withdrawal
-        ];
-    }
-
     // Trier par date décroissante
     krsort($itemsByDate);
 
     return $this->render('user/dashboard.html.twig', [
         'transactions' => $transactions,
         'itemsByDate' => $itemsByDate,
-        // ... tes autres variables existantes
     ]);
 }
 }

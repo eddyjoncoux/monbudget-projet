@@ -23,14 +23,17 @@
 
     {% if withdrawals is not empty %}
         <div class="withdrawals-container">
+            {% set totalAmount = 0 %}
+            {% for withdrawal in withdrawals %}
+                {% set totalAmount = totalAmount + withdrawal.amount %}
+            {% endfor %}
             <div class="withdrawals-summary">
                 <p class="summary-text">
                     <strong>{{ withdrawals|length }}</strong> 
                     prélèvement{{ withdrawals|length > 1 ? 's' : '' }} enregistré{{ withdrawals|length > 1 ? 's' : '' }}
+                    • Montant total : <strong>{{ totalAmount|number_format(2, ',', '.') }}€</strong>
                 </p>
             </div>
-
-            <div class="withdrawals-wrapper">
                 <table class="withdrawals-table">
                 <thead>
                     <tr>

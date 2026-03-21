@@ -97,6 +97,33 @@ th, td {
     justify-content: center;
 }
 
+/* Category input group */
+.category-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.category-add-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background-color: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.category-add-section .form-control {
+    margin: 0;
+    width: 100%;
+}
+
+.category-add-section .btn {
+    align-self: flex-start;
+    padding: 0.5rem 1rem;
+}
+
 /* ===== Flash message ===== */
 
 .flash-container {
