@@ -41,14 +41,11 @@ class WithdrawalFormType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
             ])
-            ->add('startDate', DateTimeType::class, [
-                'label' => 'Date de début',
-                'widget' => 'single_text',
-                'help' => 'Date du premier prélèvement',
-            ])
-            ->add('nextWithdrawalDate', DateTimeType::class, [
-                'label' => 'Prochain prélèvement',
-                'widget' => 'single_text',
+            ->add('dayOfMonth', ChoiceType::class, [
+                'label' => 'Jour du mois',
+                'choices' => array_combine(range(1, 31), range(1, 31)),
+                'choice_label' => fn ($choice) => $choice . ' du mois',
+                'help' => 'Jour du mois où le prélèvement aura lieu',
             ])
             ->add('endDate', DateTimeType::class, [
                 'label' => 'Date de fin',

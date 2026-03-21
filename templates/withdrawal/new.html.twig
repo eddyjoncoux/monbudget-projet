@@ -45,24 +45,18 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    {{ form_label(form.startDate, 'Date de début') }}
-                    {{ form_widget(form.startDate, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
-                    {{ form_help(form.startDate) }}
-                    {{ form_errors(form.startDate) }}
+                    {{ form_label(form.dayOfMonth, 'Jour du mois') }}
+                    {{ form_widget(form.dayOfMonth, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+                    {{ form_help(form.dayOfMonth) }}
+                    {{ form_errors(form.dayOfMonth) }}
                 </div>
 
                 <div class="form-group">
-                    {{ form_label(form.nextWithdrawalDate, 'Prochain prélèvement') }}
-                    {{ form_widget(form.nextWithdrawalDate, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
-                    {{ form_errors(form.nextWithdrawalDate) }}
+                    {{ form_label(form.endDate, 'Date de fin (optionnel)') }}
+                    {{ form_widget(form.endDate, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_help(form.endDate) }}
+                    {{ form_errors(form.endDate) }}
                 </div>
-            </div>
-
-            <div class="form-group">
-                {{ form_label(form.endDate, 'Date de fin') }}
-                {{ form_widget(form.endDate, {'attr': {'class': 'form-control'}}) }}
-                {{ form_help(form.endDate) }}
-                {{ form_errors(form.endDate) }}
             </div>
 
             <div class="form-group form-check">

@@ -5,11 +5,7 @@
         {% for dateGroup in itemsByDate %}
             {% for item in dateGroup.items %}
                 {% if item.type == 'transaction' %}
-                    {% if item.data.type.label == 'Dépense' %}
-                        {% set total = total - item.data.amount %}
-                    {% else %}
-                        {% set total = total + item.data.amount %}
-                    {% endif %}
+                    {% set total = total + item.data.amount %}
                 {% endif %}
             {% endfor %}
         {% endfor %}
@@ -37,11 +33,7 @@
                             <tr class="transaction-item {{ item.data.type.value|lower }}">
                                 <td class="transaction-description">{{ item.data.description }}</td>
                                 <td class="transaction-amount">
-                                    {% if item.data.type.label == 'Dépense' %}
-                                        {{ item.data.amount }}€
-                                    {% else %}
-                                        +{{ item.data.amount }}€
-                                    {% endif %}
+                                    {{ item.data.amount }}€
                                 </td>
                                 <td>
                                     {{ item.data.category.name }}

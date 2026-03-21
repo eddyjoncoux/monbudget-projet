@@ -38,15 +38,12 @@
             <div class="detail-section">
                 <h3>Calendrier</h3>
                 <dl class="detail-list">
-                    <dt>Date de début</dt>
-                    <dd>{{ withdrawal.startDate|date('d/m/Y') }}</dd>
+                    <dt>Jour du mois</dt>
+                    <dd>Le {{ withdrawal.dayOfMonth }} du mois</dd>
 
                     <dt>Prochain prélèvement</dt>
                     <dd>
                         {{ withdrawal.nextWithdrawalDate|date('d/m/Y') }}
-                        {% if withdrawal.isOverdue %}
-                            <span class="badge-overdue">⚠️ En retard</span>
-                        {% endif %}
                     </dd>
 
                     {% if withdrawal.lastWithdrawalDate %}
@@ -62,18 +59,6 @@
                         <dd><span class="text-muted">Sans fin</span></dd>
                     {% endif %}
                 </dl>
-            </div>
-
-            <div class="detail-section">
-                <h3>Gestion</h3>
-                <div class="management-actions">
-                    {% if withdrawal.isActive and withdrawal.isOverdue %}
-                        <form method="post" action="{{ path('app_withdrawal_process', {'id': withdrawal.id}) }}" style="display:inline;">
-                            <input type="hidden" name="_token" value="{{ csrf_token('process' ~ withdrawal.id) }}">
-                            <button type="submit" class="btn btn-success">▶️ Traiter le prélèvement</button>
-                        </form>
-                    {% endif %}
-                </div>
             </div>
 
             <div class="detail-section">
