@@ -53,10 +53,7 @@
                             <td class="withdrawal-amount">{{ withdrawal.amount|number_format(2, ',', '.') }}€</td>
                             <td class="withdrawal-frequency">{{ withdrawal.frequency.label }}</td>
                             <td class="withdrawal-date">
-                                {{ withdrawal.nextWithdrawalDate|date('d/m/Y') }}
-                                {% if withdrawal.isOverdue %}
-                                    <span class="badge-overdue">⚠️ En retard</span>
-                                {% endif %}
+                                Le {{ withdrawal.dayOfMonth }} du mois
                             </td>
                             <td>
                                 {% if withdrawal.category %}
@@ -75,12 +72,6 @@
                             <td class="withdrawal-actions">
                                 <a href="{{ path('app_withdrawal_show', {'id': withdrawal.id}) }}" class="btn-icon" title="Voir">👁️</a>
                                 <a href="{{ path('app_withdrawal_edit', {'id': withdrawal.id}) }}" class="btn-icon" title="Modifier">✏️</a>
-                                {% if withdrawal.isActive and withdrawal.isOverdue %}
-                                    <form method="post" action="{{ path('app_withdrawal_process', {'id': withdrawal.id}) }}" style="display:inline;">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('process' ~ withdrawal.id) }}">
-                                        <button type="submit" class="btn-icon btn-success" title="Traiter le prélèvement">▶️</button>
-                                    </form>
-                                {% endif %}
                                 {% if withdrawal.isActive %}
                                     <form method="post" action="{{ path('app_withdrawal_toggle', {'id': withdrawal.id}) }}" style="display:inline;">
                                         <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ withdrawal.id) }}">

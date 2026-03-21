@@ -129,29 +129,4 @@ final class WithdrawalController extends AbstractController
 
         return $this->redirectToRoute('app_withdrawal_index', [], Response::HTTP_SEE_OTHER);
     }
-
-    #[Route('/{id}/process', name: 'app_withdrawal_process', methods: ['POST'])]
-    public function process(
-        Request $request,
-        Withdrawal $withdrawal,
-        EntityManagerInterface $entityManager
-    ): Response {
-        if ($withdrawal->getUser() !== $this->getUser()) {
-            throw $this->createAccessDeniedException();
-        }
-
-        if ($this->isCsrfTokenValid('process' . $withdrawal->getId(), $request->getPayload()->getString('_token'))) {
-            // Update last withdrawal date and calculate next date
-            $withdrawal->setLastWithdrawalDate(new \DateTimeImmutable());
-            $nextDate = $withdrawal->getFrequency()->getNextDate(new \DateTimeImmutable());
-            $withdrawal->setNextWithdrawalDate($nextDate);
-            $withdrawal->setUpdatedAt(new \DateTimeImmutable());
-
-            $entityManager->flush();
-
-            $this->addFlash('success', "Prélèvement traité. Prochain prélèvement: {$nextDate->format('d/m/Y')}");
-        }
-
-        return $this->redirectToRoute('app_withdrawal_index', [], Response::HTTP_SEE_OTHER);
-    }
 }

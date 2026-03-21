@@ -21,14 +21,14 @@ class Withdrawal
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    #[ORM\Column(type: 'integer')]
+    private ?int $dayOfMonth = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $nextWithdrawalDate = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $lastWithdrawalDate = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $startDate = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $endDate = null;
@@ -55,7 +55,6 @@ class Withdrawal
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->startDate = new \DateTimeImmutable();
         $this->nextWithdrawalDate = new \DateTimeImmutable();
     }
 
@@ -108,14 +107,15 @@ class Withdrawal
         return $this;
     }
 
-    public function getStartDate(): ?\DateTimeImmutable
+    public function getDayOfMonth(): ?int
     {
-        return $this->startDate;
+        return $this->dayOfMonth;
     }
 
-    public function setStartDate(\DateTimeImmutable $startDate): static
+    public function setDayOfMonth(int $dayOfMonth): static
     {
-        $this->startDate = $startDate;
+        $this->dayOfMonth = $dayOfMonth;
+        $this->calculateNextWithdrawalDate();
         return $this;
     }
 
@@ -194,6 +194,42 @@ class Withdrawal
     {
         $this->updatedAt = $updatedAt;
         return $this;
+    }
+
+    private function calculateNextWithdrawalDate(): void
+    {
+        if (!$this->dayOfMonth || !$this->frequency) {
+            return;
+        }
+
+        $now = new \DateTimeImmutable();
+        $currentYear = (int) $now->format('Y');
+        $currentMonth = (int) $now->format('m');
+
+        // Calculer la date pour ce mois-ci
+        try {
+            $nextDate = new \DateTimeImmutable($currentYear . '-' . $currentMonth . '-' . $this->dayOfMonth);
+        } catch (\Exception $e) {
+            // Si le jour n'existe pas (ex: 31 février), prendre le dernier jour du mois
+            $nextDate = new \DateTimeImmutable($currentYear . '-' . $currentMonth . '-01');
+            $nextDate = $nextDate->modify('last day of this month');
+        }
+
+        // Si la date calculée est dans le passé, passer au prochain mois
+        if ($nextDate < $now) {
+            $nextMonth = $now->modify('+1 month');
+            $nextYear = (int) $nextMonth->format('Y');
+            $nextMonthNum = (int) $nextMonth->format('m');
+
+            try {
+                $nextDate = new \DateTimeImmutable($nextYear . '-' . $nextMonthNum . '-' . $this->dayOfMonth);
+            } catch (\Exception $e) {
+                $nextDate = new \DateTimeImmutable($nextYear . '-' . $nextMonthNum . '-01');
+                $nextDate = $nextDate->modify('last day of this month');
+            }
+        }
+
+        $this->nextWithdrawalDate = $nextDate;
     }
 
     public function isOverdue(): bool

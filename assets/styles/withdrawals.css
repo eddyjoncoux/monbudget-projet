@@ -110,17 +110,6 @@
     display: inline-block;
 }
 
-.badge-overdue {
-    background-color: #f59e0b;
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    margin-left: 0.5rem;
-    display: inline-block;
-}
-
 /* Actions */
 .withdrawal-actions {
     text-align: center;
@@ -582,12 +571,6 @@ small,
     
     .withdrawal-date {
         white-space: normal;
-    }
-    
-    .badge-overdue {
-        padding: 0.2rem 0.3rem;
-        font-size: 0.65rem;
-        margin-left: 0.25rem;
     }
     
     .withdrawal-description {

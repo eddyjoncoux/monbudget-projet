@@ -42,6 +42,7 @@ class TransactionFormType extends AbstractType
                 'expanded' => true,   // boutons radio
                 'multiple' => false,
                 'help' => 'Sélectionnez si c\'est une dépense ou un revenu',
+                'preferred_choices' => [TransactionType::EXPENSE],
             ])
             ->add('category', EntityType::class, [
                 'label' => 'Catégorie',

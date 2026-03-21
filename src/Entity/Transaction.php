@@ -55,7 +55,8 @@ class Transaction
     {
         if($this->type === TransactionType::EXPENSE) {
             $this->amount = -abs($this->amount);
-            } else { $this->amount + abs($this->amount);   
+        } else {
+            $this->amount = abs($this->amount);
         }
     }
 
