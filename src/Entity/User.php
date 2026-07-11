@@ -42,10 +42,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Withdrawal::class)]
     private Collection $withdrawals;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Category::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $categories;
+
     public function __construct()
     {
         $this->transactions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->withdrawals = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getId(): ?int
@@ -161,6 +165,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->withdrawals->removeElement($withdrawal)) {
             if ($withdrawal->getUser() === $this) {
                 $withdrawal->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
+            if ($category->getUser() === $this) {
+                $category->setUser(null);
             }
         }
 

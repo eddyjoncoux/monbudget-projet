@@ -18,7 +18,7 @@ final class CategoryController extends AbstractController
     public function index(CategoryRepository $categoryRepository): Response
     {
         return $this->render('category/index.html.twig', [
-            'categories' => $categoryRepository->findAll(),
+            'categories' => $categoryRepository->findBy(['user' => $this->getUser()]),
         ]);
     }
 
@@ -29,14 +29,18 @@ final class CategoryController extends AbstractController
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
-        //Vérifier si il n'existe pas déjà une catégorie avec le même nom
-        $existingCategory = $entityManager->getRepository(Category::class)->findOneBy(['name' => $category->getName()]);
+        // Vérifier si il n'existe pas déjà une catégorie avec le même nom pour l'utilisateur
+        $existingCategory = $entityManager->getRepository(Category::class)->findOneBy([
+            'name' => $category->getName(),
+            'user' => $this->getUser(),
+        ]);
         if ($existingCategory) {
             $this->addFlash('error', 'Une catégorie avec ce nom existe déjà.');
             return $this->redirectToRoute('app_category_new');
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $category->setUser($this->getUser());
             $entityManager->persist($category);
             $entityManager->flush();
 
@@ -55,6 +59,9 @@ final class CategoryController extends AbstractController
     #[Route('/{id}', name: 'app_category_show', methods: ['GET'])]
     public function show(Category $category): Response
     {
+        if ($category->getUser() !== $this->getUser()) {
+            throw $this->createNotFoundException();
+        }
         return $this->render('category/show.html.twig', [
             'category' => $category,
         ]);
@@ -63,6 +70,9 @@ final class CategoryController extends AbstractController
     #[Route('/{id}/edit', name: 'app_category_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {
+        if ($category->getUser() !== $this->getUser()) {
+            throw $this->createNotFoundException();
+        }
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
@@ -88,14 +98,18 @@ final class CategoryController extends AbstractController
             return $this->json(['success' => false, 'message' => 'Le nom de la catégorie est requis'], 400);
         }
 
-        // Vérifier si la catégorie existe déjà
-        $existingCategory = $entityManager->getRepository(Category::class)->findOneBy(['name' => $name]);
+        // Vérifier si la catégorie existe déjà pour l'utilisateur
+        $existingCategory = $entityManager->getRepository(Category::class)->findOneBy([
+            'name' => $name,
+            'user' => $this->getUser(),
+        ]);
         if ($existingCategory) {
             return $this->json(['success' => false, 'message' => 'Une catégorie avec ce nom existe déjà'], 400);
         }
 
         $category = new Category();
         $category->setName($name);
+        $category->setUser($this->getUser());
 
         $entityManager->persist($category);
         $entityManager->flush();
@@ -112,7 +126,11 @@ final class CategoryController extends AbstractController
     #[Route('/{id}', name: 'app_category_delete', methods: ['POST'])]
     public function delete(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->getPayload()->getString('_token'))) {
+        if ($category->getUser() !== $this->getUser()) {
+            throw $this->createNotFoundException();
+        }
+
+        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
             $entityManager->remove($category);
             $entityManager->flush();
         }
