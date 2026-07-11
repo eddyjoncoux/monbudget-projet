@@ -21,9 +21,11 @@ final class Version20260711112000 extends AbstractMigration
             . "SELECT 'seed_user', JSON_ARRAY(), '\$2y\$12\$z1nDePg2fqBjOWX7SNbMsORVSGC49riWm3.5XUYL6CUAcy6IcASCe', 'Seed User' "
             . "FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM `user` u WHERE u.username = 'seed_user')");
 
-        // set category.user_id to the seed user (no need to check IS NULL since column is NOT NULL)
-        // This is a safety step in case there are existing categories
+        // set category.user_id to the seed user for existing null categories
         $this->addSql("UPDATE `category` SET user_id = (SELECT id FROM `user` WHERE username = 'seed_user' LIMIT 1) WHERE user_id IS NULL");
+
+        // make user_id NOT NULL
+        $this->addSql('ALTER TABLE `category` MODIFY user_id INT NOT NULL');
     }
 
     public function down(Schema $schema): void
