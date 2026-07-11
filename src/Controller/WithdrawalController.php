@@ -36,7 +36,9 @@ final class WithdrawalController extends AbstractController
     {
         $withdrawal = new Withdrawal();
 
-        $form = $this->createForm(WithdrawalFormType::class, $withdrawal);
+        $form = $this->createForm(WithdrawalFormType::class, $withdrawal, [
+            'user' => $this->getUser(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -76,7 +78,9 @@ final class WithdrawalController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createForm(WithdrawalFormType::class, $withdrawal);
+        $form = $this->createForm(WithdrawalFormType::class, $withdrawal, [
+            'user' => $this->getUser(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

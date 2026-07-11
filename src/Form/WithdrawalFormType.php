@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Category;
 use App\Entity\Withdrawal;
 use App\Enum\WithdrawalFrequency;
+use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -14,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class WithdrawalFormType extends AbstractType
 {
@@ -59,6 +61,17 @@ class WithdrawalFormType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'Choisir une catégorie',
                 'required' => false,
+                'query_builder' => function (CategoryRepository $repo) use ($options) {
+                    $qb = $repo->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+
+                    if ($options['user'] !== null) {
+                        $qb->andWhere('c.user = :user')
+                           ->setParameter('user', $options['user']);
+                    }
+
+                    return $qb;
+                },
             ])
             ->add('isActive', CheckboxType::class, [
                 'label' => 'Prélèvement actif',
@@ -71,6 +84,8 @@ class WithdrawalFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Withdrawal::class,
+            'user' => null,
         ]);
+        $resolver->setAllowedTypes('user', [UserInterface::class, 'null']);
     }
 }

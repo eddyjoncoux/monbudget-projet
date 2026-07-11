@@ -56,7 +56,9 @@ final class TransactionController extends AbstractController
     {
         $transaction = new Transaction();
 
-        $form = $this->createForm(TransactionFormType::class, $transaction);
+        $form = $this->createForm(TransactionFormType::class, $transaction, [
+            'user' => $this->getUser(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -99,7 +101,9 @@ final class TransactionController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createForm(TransactionFormType::class, $transaction);
+        $form = $this->createForm(TransactionFormType::class, $transaction, [
+            'user' => $this->getUser(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

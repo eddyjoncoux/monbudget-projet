@@ -5,12 +5,14 @@ namespace App\Form;
 use App\Entity\Category;
 use App\Entity\Transaction;
 use App\Enum\TransactionType; // ⚠️ enum métier
+use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class TransactionFormType extends AbstractType
 {
@@ -50,6 +52,17 @@ class TransactionFormType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'Choisir une catégorie',
                 'help' => 'Catégorie de la transaction',
+                'query_builder' => function (CategoryRepository $repo) use ($options) {
+                    $qb = $repo->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+
+                    if ($options['user'] !== null) {
+                        $qb->andWhere('c.user = :user')
+                           ->setParameter('user', $options['user']);
+                    }
+
+                    return $qb;
+                },
             ]);
     }
 
@@ -57,6 +70,8 @@ class TransactionFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Transaction::class,
+            'user' => null,
         ]);
+        $resolver->setAllowedTypes('user', [UserInterface::class, 'null']);
     }
 }
