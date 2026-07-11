@@ -11,23 +11,18 @@ final class Version20260711160000 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Ensure user_id column exists in category table';
+        return 'Ensure foreign key constraint on user_id exists (if column was added by previous migration)';
     }
 
     public function up(Schema $schema): void
     {
-        // Add the user_id column if it doesn't exist
-        // We use a simple approach: try to add and if it fails, that's ok since it means it already exists
-        $this->addSql('ALTER TABLE `category` ADD COLUMN `user_id` INT NULL DEFAULT NULL');
-        
-        // Now add the foreign key if it doesn't exist
-        $this->addSql('ALTER TABLE `category` ADD CONSTRAINT `FK_64C19C1A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)');
+        // This migration is a no-op now since Version20260711150000 already handles the column creation
+        // It exists only to prevent issues if migrations are replayed
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE `category` DROP FOREIGN KEY `FK_64C19C1A76ED395`');
-        $this->addSql('ALTER TABLE `category` DROP COLUMN `user_id`');
+        // Nothing to do on rollback
     }
 }
 
